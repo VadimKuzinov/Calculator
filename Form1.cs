@@ -151,8 +151,17 @@ namespace Calculator
         {
             try
             {
-                double value = Double.Parse(mainTextBox.Text);
-                calculator_.AppendNumber(value);
+                List<double> temp = new List<double>();
+                foreach (var str in mainTextBox.Text.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries ))
+                {
+                    double value = Double.Parse(str);
+                    temp.Add(value);
+                }
+
+                foreach (var el in temp)
+                {
+                    calculator_.AppendNumber(el);
+                }
                 appendedAndNotApplied_= true;
                 FixButton.Enabled = true;
             }
@@ -352,7 +361,7 @@ namespace Calculator
                     string line;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        var splited = line.Split();
+                        var splited = line.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries );
                         foreach (var str in splited)
                         {
                             calculator_.AppendNumber(Double.Parse(str));
@@ -394,6 +403,14 @@ namespace Calculator
             UndoButton.Enabled = (!calculator_.IsTravelling && calculator_.OperationHistory.Count > 1) ||
                       (calculator_.IsTravelling && calculator_.CurrentTime > 0);
             RepeatButton.Enabled = calculator_.IsTravelling;
+            ApplyButton.Enabled = (contextTextBox.Text != "") && (appendedAndNotApplied_ == false) && (calculator_.Numbers.Count > 0);
+        }
+
+        private void clearDataButton_Click(object sender, EventArgs e)
+        {
+            calculator_.ClearNumbers();
+            textBox1.Text = string.Empty;
+            historyListBox.Items.Add(historyListBox.Items.Count + ") " + "clear");
         }
     }
 }

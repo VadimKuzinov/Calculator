@@ -114,6 +114,12 @@ namespace Calculator
             }
         }
         
+        public void ClearNumbers()
+        {
+            Numbers.Clear();
+            OperationHistory.Add(list => { list.Clear(); return list; });
+        }
+
         public void AppendToOperationHistoryAppend()
         {
             Func<List<double>, List<double>> operation = list =>

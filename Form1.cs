@@ -408,9 +408,12 @@ namespace Calculator
 
         private void clearDataButton_Click(object sender, EventArgs e)
         {
-            calculator_.ClearNumbers();
-            textBox1.Text = string.Empty;
-            historyListBox.Items.Add(historyListBox.Items.Count + ") " + "clear");
+            if (calculator_.Numbers.Count > 0)
+            {
+                calculator_.ClearNumbers();
+                textBox1.Text = string.Empty;
+                historyListBox.Items.Add(historyListBox.Items.Count + ") " + "clear");
+            }
         }
     }
 }
